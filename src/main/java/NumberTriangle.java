@@ -89,20 +89,17 @@ public class NumberTriangle {
      */
     public int retrieve(String path) {
         NumberTriangle node = this;
-        if(path.equals("l")){
-            while(node.left != null) {
+        String[] pathArray = path.split("");
+        for (String s : pathArray) {
+            if (s.equals("l")) {
                 node = node.left;
-            }
-            return node.root;
-        } else if (path.equals("r")) {
-            while(node.right != null) {
+            } else if (s.equals("r")) {
                 node = node.right;
+            } else {
+                return -1;
             }
-            return node.root;
         }
-        else {
-            return -1;
-        }
+        return node.root;
     }
 
     /** Read in the NumberTriangle structure from a file.
