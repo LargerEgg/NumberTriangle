@@ -1,35 +1,29 @@
 import java.io.*;
+import java.util.ArrayList;
 
-/**
+/*
  * This is the provided NumberTriangle class to be used in this coding task.
- *
  * Note: This is like a tree, but some nodes in the structure have two parents.
- *
  * The structure is shown below. Observe that the parents of e are b and c, whereas
  * d and f each only have one parent. Each row is complete and will never be missing
  * a node. So each row has one more NumberTriangle object than the row above it.
- *
  *                  a
  *                b   c
  *              d   e   f
  *            h   i   j   k
- *
  * Also note that this data structure is minimally defined and is only intended to
  * be constructed using the loadTriangle method, which you will implement
  * in this file. We have not included any code to enforce the structure noted above,
  * and you don't have to write any either.
- *
- *
  * See NumberTriangleTest.java for a few basic test cases.
- *
  * Extra: If you decide to solve the Project Euler problems (see main),
  *        feel free to add extra methods to this class. Just make sure that your
  *        code still compiles and runs so that we can run the tests on your code.
- *
  */
+
 public class NumberTriangle {
 
-    private int root;
+    private final int root;
 
     private NumberTriangle left;
     private NumberTriangle right;
@@ -52,7 +46,7 @@ public class NumberTriangle {
     }
 
 
-    /**
+    /*
      * [not for credit]
      * Set the root of this NumberTriangle to be the max path sum
      * of this NumberTriangle, as defined in Project Euler problem 18.
@@ -72,7 +66,7 @@ public class NumberTriangle {
     }
 
 
-    /**
+    /*
      * Follow path through this NumberTriangle structure ('l' = left; 'r' = right) and
      * return the root value at the end of the path. An empty string will return
      * the root of the NumberTriangle.
@@ -100,9 +94,10 @@ public class NumberTriangle {
             }
         }
         return node.root;
+
     }
 
-    /** Read in the NumberTriangle structure from a file.
+    /* Read in the NumberTriangle structure from a file.
      *
      * You may assume that it is a valid format with a height of at least 1,
      * so there is at least one line with a number on it to start the file.
@@ -120,22 +115,40 @@ public class NumberTriangle {
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
 
-        // TODO define any variables that you want to use to store things
+        String[] numbers;
 
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
-        NumberTriangle top = null;
+        NumberTriangle top;
 
         String line = br.readLine();
+        top = new NumberTriangle(Integer.parseInt(line));
+        ArrayList<NumberTriangle> nodes = new ArrayList<>();
+        nodes.add(top);
         while (line != null) {
 
             // remove when done; this line is included so running starter code prints the contents of the file
             System.out.println(line);
-
-            // TODO process the line
-
-            //read the next line
             line = br.readLine();
+            if (line == null) {
+                break;
+            }
+            int size = nodes.size();
+            numbers = line.split(" ");
+            ArrayList<NumberTriangle> num_nodes = new ArrayList<>();
+            for (String number : numbers) {
+                num_nodes.add(new NumberTriangle(Integer.parseInt(number)));
+            }
+            for (int i = 0; i < size; i++) {
+                nodes.get(i).setLeft(num_nodes.get(i));
+                nodes.get(i).setRight(num_nodes.get(i + 1));
+                nodes.add(nodes.get(i).left);
+            }
+            nodes.add(nodes.get(size - 1).right);
+            nodes.subList(0, size).clear();
+
+
+
         }
         br.close();
         return top;
