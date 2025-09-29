@@ -90,7 +90,7 @@ public class NumberTriangle {
             } else if (s.equals("r")) {
                 node = node.right;
             } else {
-                return -1;
+                return node.getRoot();
             }
         }
         return node.root;
